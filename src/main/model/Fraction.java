@@ -10,8 +10,9 @@ public class Fraction {
     private int numerator;
     private int denominator;
     private boolean isInteger = false;
+    final private static int pi = 355/113;
 
-    public Fraction(int numerator, int denominator){
+    public Fraction(int numerator, int denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
         if ((numerator / denominator) % 2 == 0) {
@@ -86,8 +87,38 @@ public class Fraction {
         return this;
     }
 
+    public Fraction add(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator += fraction.numerator;
+        newFraction.denominator += fraction.denominator;
+        return newFraction;
+    }
+
+    public Fraction sub(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator -= fraction.numerator;
+        newFraction.denominator -= fraction.denominator;
+        return newFraction;
+    }
+
+    public Fraction mul(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator *= fraction.numerator;
+        newFraction.denominator *= fraction.denominator;
+        return newFraction;
+    }
+
+    public Fraction div(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator /= fraction.numerator;
+        newFraction.denominator /= fraction.denominator;
+        return newFraction;
+    }
+
+    public Fraction pow(Fraction fraction, int power) {
+        fraction.numerator = (int) Math.pow(this.numerator, power);
+        fraction.denominator = (int) Math.pow(this.denominator, power);
+        return fraction;
+    }
+
     public Fraction opposite() {
-        this.numerator = 0 - numerator;
+        this.numerator = -numerator;
         return this;
     }
 
@@ -130,7 +161,7 @@ public class Fraction {
         } else if (fraction == null) {
             return false;
         } else {
-            Fraction f = (Fraction) fraction;
+            //Fraction f = (Fraction) fraction;
             return false;
         }
     }
