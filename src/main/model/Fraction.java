@@ -2,7 +2,11 @@ package main.model;
 
 import java.util.Objects;
 
+import static main.model.MathUtil.GCD;
+
+
 public class Fraction {
+    //2-tes szint
     private int numerator;
     private int denominator;
     private boolean isInteger = false;
@@ -13,6 +17,7 @@ public class Fraction {
         if ((numerator / denominator) % 2 == 0) {
             isInteger = true;
         }
+        this.simplify();
     }
 
     public Fraction(int numerator) {
@@ -25,6 +30,25 @@ public class Fraction {
         numerator = 0;
         denominator = 1;
         isInteger = true;
+    }
+
+    public Fraction(int numerator, int denominator, boolean simplify) {
+        this.numerator = numerator;
+        this.denominator = denominator;
+        if ((numerator / denominator) % 2 == 0) {
+            isInteger = true;
+        }
+        if (simplify) {
+            this.simplify();
+        }
+    }
+
+    public Fraction(Fraction fraction, boolean simplify) {
+        this.numerator = fraction.numerator;
+        this.denominator = fraction.denominator;
+        if (simplify) {
+            this.simplify();
+        }
     }
 
     public Fraction(Fraction fraction) {
@@ -100,6 +124,7 @@ public class Fraction {
     }
 
     public boolean equals(Fraction fraction) {
+        this.simplify();
         if (fraction == this) {
             return true;
         } else if (fraction == null) {
@@ -119,6 +144,30 @@ public class Fraction {
     public String toString() {
         return this.numerator + "/" + this.denominator;
     }
+
+    //3-mas szint
+
+    private void simplify() {
+        int GCD = GCD(this.numerator, this.denominator);
+        denominator /= GCD;
+        numerator /= GCD;
+    }
+
+    private void expand(int i) {
+        numerator += denominator*i;
+    }
+
+    public Fraction getSimplestForm() {
+        this.simplify();
+        return this;
+    }
+
+    public Fraction getExpandedForm(int i) {
+        this.expand(i);
+        return this;
+    }
+
+    //4-es szint
 
 
 
