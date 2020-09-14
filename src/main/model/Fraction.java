@@ -87,36 +87,6 @@ public class Fraction {
         return this;
     }
 
-    public Fraction add(Fraction newFraction, Fraction fraction) {
-        newFraction.numerator += fraction.numerator;
-        newFraction.denominator += fraction.denominator;
-        return newFraction;
-    }
-
-    public Fraction sub(Fraction newFraction, Fraction fraction) {
-        newFraction.numerator -= fraction.numerator;
-        newFraction.denominator -= fraction.denominator;
-        return newFraction;
-    }
-
-    public Fraction mul(Fraction newFraction, Fraction fraction) {
-        newFraction.numerator *= fraction.numerator;
-        newFraction.denominator *= fraction.denominator;
-        return newFraction;
-    }
-
-    public Fraction div(Fraction newFraction, Fraction fraction) {
-        newFraction.numerator /= fraction.numerator;
-        newFraction.denominator /= fraction.denominator;
-        return newFraction;
-    }
-
-    public Fraction pow(Fraction fraction, int power) {
-        fraction.numerator = (int) Math.pow(this.numerator, power);
-        fraction.denominator = (int) Math.pow(this.denominator, power);
-        return fraction;
-    }
-
     public Fraction opposite() {
         this.numerator = -numerator;
         return this;
@@ -200,7 +170,36 @@ public class Fraction {
 
     //4-es szint
 
+    public Fraction add(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator += fraction.numerator;
+        newFraction.denominator += fraction.denominator;
+        return newFraction;
+    }
 
+    public Fraction sub(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator -= fraction.numerator;
+        newFraction.denominator -= fraction.denominator;
+        return newFraction;
+    }
 
+    public Fraction mul(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator *= fraction.numerator;
+        newFraction.denominator *= fraction.denominator;
+        return newFraction;
+    }
 
+    public Fraction div(Fraction newFraction, Fraction fraction) {
+        newFraction.numerator /= fraction.numerator;
+        newFraction.denominator /= fraction.denominator;
+        return newFraction;
+    }
+
+    public Fraction pow(Fraction fraction, int power) {
+        fraction.numerator = (int) Math.pow(this.numerator, power);
+        fraction.denominator = (int) Math.pow(this.denominator, power);
+        return fraction;
+    }
+
+    //5-ös szint
 }
+
