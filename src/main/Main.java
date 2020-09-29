@@ -29,32 +29,32 @@ public class Main {
                             case "+":
                                 switch (next.split(" ")[1].split("/").length) {
                                     case 2 -> fraction.add(new Fraction(Integer.parseInt(next.split(" ")[1].split("/")[0]), Integer.parseInt(next.split(" ")[1].split("/")[1])));
-                                    case 1 -> fraction.add(Objects.requireNonNull(Fraction.parseString(next.split(" ")[1])));
+                                    case 1 -> fraction.add(Objects.requireNonNull(Fraction.parseDouble(Double.parseDouble(next.split(" ")[1]))));
                                 }
                                 break;
                             case "-":
                                 switch (next.split(" ")[1].split("/").length) {
                                     case 2 -> fraction.sub(new Fraction(Integer.parseInt(next.split(" ")[1].split("/")[0]), Integer.parseInt(next.split(" ")[1].split("/")[1])));
-                                    case 1 -> fraction.sub(Objects.requireNonNull(Fraction.parseString(next.split(" ")[1])));
+                                    case 1 -> fraction.sub(Objects.requireNonNull(Fraction.parseDouble(Double.parseDouble(next.split(" ")[1]))));
                                 }
                                 break;
                             case "*":
                                 switch (next.split(" ")[1].split("/").length) {
                                     case 2 -> fraction.mul(new Fraction(Integer.parseInt(next.split(" ")[1].split("/")[0]), Integer.parseInt(next.split(" ")[1].split("/")[1])));
-                                    case 1 -> fraction.mul(Objects.requireNonNull(Fraction.parseString(next.split(" ")[1])));
+                                    case 1 -> fraction.mul(Objects.requireNonNull(Fraction.parseDouble(Double.parseDouble(next.split(" ")[1]))));
                                 }
                                 break;
                             case "/":
                                 switch (next.split(" ")[1].split("/").length) {
                                     case 2 -> fraction.div(new Fraction(Integer.parseInt(next.split(" ")[1].split("/")[0]), Integer.parseInt(next.split(" ")[1].split("/")[1])));
-                                    case 1 -> fraction.div(Objects.requireNonNull(Fraction.parseString(next.split(" ")[1])));
+                                    case 1 -> fraction.div(Objects.requireNonNull(Fraction.parseDouble(Double.parseDouble(next.split(" ")[1]))));
                                 }
                                 break;
                         }
                 }
             }
             try (FileWriter fw = new FileWriter(path2)) {
-                fw.write(fraction.toString() + "\n" + (double) fraction.getNumerator()/fraction.getDenominator());
+                fw.write(fraction + "\n" + (double) fraction.getNumerator()/fraction.getDenominator());
             } catch (IOException e) {
                 System.err.println("Error while writing into file!");
             }

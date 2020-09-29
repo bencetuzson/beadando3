@@ -4,21 +4,23 @@ import java.util.Objects;
 
 import static main.model.MathUtil.*;
 
-@SuppressWarnings("ConstantConditions")
 public class Fraction implements Comparable<Fraction> {
     //2-tes szint
     private int numerator;
     private int denominator;
     private boolean isInteger = false;
-    final private static Fraction pi = new Fraction(355, 113);
+    final public static Fraction PI = new Fraction(355, 113);
 
     public Fraction(int numerator, int denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
-        if (this.numerator % this.denominator == 0) {
-            isInteger = true;
+        if (denominator != 0) {
+            this.numerator = numerator;
+            this.denominator = denominator;
+            isInteger = isInteger();
+
+            this.simplify();
+        } else {
+            throw new ArithmeticException("Denominator cannot be 0!");
         }
-        this.simplify();
     }
 
     public Fraction(int numerator) {
@@ -34,12 +36,16 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     public Fraction(int numerator, int denominator, boolean simplify) {
-        this.numerator = numerator;
-        this.denominator = denominator;
-        if (simplify) {
-            this.simplify();
+        if (denominator != 0) {
+            this.numerator = numerator;
+            this.denominator = denominator;
+            if (simplify) {
+                this.simplify();
+            } else {
+                isInteger = isInteger();
+            }
         } else {
-            isInteger = this.numerator % this.denominator == 0;
+            throw new ArithmeticException("Denominator cannot be 0!");
         }
     }
 
@@ -49,7 +55,7 @@ public class Fraction implements Comparable<Fraction> {
         if (simplify) {
             this.simplify();
         } else {
-            isInteger = this.numerator % this.denominator == 0;
+            isInteger = isInteger();
         }
     }
 
@@ -60,35 +66,51 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     public Fraction add(Fraction fraction) {
-        Fraction ret = new Fraction();
-        ret.denominator = LCM(denominator, ret.denominator, fraction.denominator);
-        setNumerator(ret.numerator += ret.denominator / fraction.denominator * fraction.numerator + ret.denominator / denominator * numerator);
-        setDenominator(ret.denominator);
-        this.simplify();
-        return this;
+        if (denominator != 0 || fraction.denominator != 0) {
+            Fraction ret = new Fraction();
+            ret.denominator = LCM(denominator, ret.denominator, fraction.denominator);
+            setNumerator(ret.numerator += ret.denominator / fraction.denominator * fraction.numerator + ret.denominator / denominator * numerator);
+            setDenominator(ret.denominator);
+            this.simplify();
+            return this;
+        } else {
+            throw new ArithmeticException("Denominator cannot be 0!");
+        }
     }
 
     public Fraction sub(Fraction fraction) {
-        Fraction ret = new Fraction();
-        ret.denominator = LCM(denominator, ret.denominator, fraction.denominator);
-        setNumerator(ret.numerator -= ret.denominator / fraction.denominator * fraction.numerator - ret.denominator / denominator * numerator);
-        setDenominator(ret.denominator);
-        this.simplify();
-        return this;
+        if (denominator != 0 || fraction.denominator != 0) {
+            Fraction ret = new Fraction();
+            ret.denominator = LCM(denominator, ret.denominator, fraction.denominator);
+            setNumerator(ret.numerator -= ret.denominator / fraction.denominator * fraction.numerator - ret.denominator / denominator * numerator);
+            setDenominator(ret.denominator);
+            this.simplify();
+            return this;
+        } else {
+            throw new ArithmeticException("Denominator cannot be 0!");
+        }
     }
 
     public Fraction mul(Fraction fraction) {
-        numerator *= fraction.numerator;
-        denominator *= fraction.denominator;
-        this.simplify();
-        return this;
+        if (denominator != 0 || fraction.denominator != 0) {
+            numerator *= fraction.numerator;
+            denominator *= fraction.denominator;
+            this.simplify();
+            return this;
+        } else {
+            throw new ArithmeticException("Denominator cannot be 0!");
+        }
     }
 
     public Fraction div(Fraction fraction) {
-        numerator *= fraction.denominator;
-        denominator *= fraction.numerator;
-        this.simplify();
-        return this;
+        if (denominator != 0 || fraction.denominator != 0) {
+            numerator *= fraction.denominator;
+            denominator *= fraction.numerator;
+            this.simplify();
+            return this;
+        } else {
+            throw new ArithmeticException("Denominator cannot be 0!");
+        }
     }
 
     public Fraction pow(int power) {
@@ -103,11 +125,10 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     public Fraction reciprocal() {
-        try {
+        if (denominator != 0) {
             return new Fraction(denominator, numerator).getSimplestForm();
-        } catch (ArithmeticException e) {
-            System.err.println("The fraction's reciprocal doesn't exist!");
-            return null;
+        } else {
+            throw new ArithmeticException("The fraction's reciprocal doesn't exist!");
         }
     }
 
@@ -116,11 +137,15 @@ public class Fraction implements Comparable<Fraction> {
     }
 
     private void setDenominator(int denominator) {
-        try {
+        if (denominator != 0) {
             this.denominator = denominator;
-        } catch (IllegalArgumentException e) {
-            System.err.println("Illegal denominator!");
+        } else {
+            throw new IllegalArgumentException("Denominator cannot be 0!");
         }
+    }
+
+    private void setIsInteger(boolean isInteger) {
+        this.isInteger = isInteger;
     }
 
     public int getNumerator() {
@@ -131,16 +156,22 @@ public class Fraction implements Comparable<Fraction> {
         return denominator;
     }
 
-    public boolean equals(Fraction fraction) {
-        if (fraction.getSimplestForm().numerator == getSimplestForm().numerator && fraction.getSimplestForm().denominator == getSimplestForm().denominator) {
+    public boolean getIsInteger() {
+        return isInteger;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (((Fraction) o).getSimplestForm().numerator == getSimplestForm().numerator && ((Fraction) o).getSimplestForm().denominator == getSimplestForm().denominator) {
             return true;
-        } else if (fraction == null) {
+        } else if (o == null) {
             return false;
         } else {
             return false;
         }
     }
 
+    @Override
     public int hashCode() {
         return Objects.hash(numerator, denominator);
     }
@@ -160,12 +191,12 @@ public class Fraction implements Comparable<Fraction> {
         int GCD = GCD(numerator, denominator);
         denominator /= GCD;
         numerator /= GCD;
-        isInteger = numerator % denominator == 0;
+        setIsInteger(isInteger());
     }
 
     private void expand(int n) {
         numerator += denominator*n;
-        isInteger = numerator % denominator == 0;
+        setIsInteger(isInteger());
     }
 
     public Fraction getSimplestForm() {
@@ -224,9 +255,9 @@ public class Fraction implements Comparable<Fraction> {
         return ret.getSimplestForm();
     }
 
-    public Fraction pow(Fraction fraction, int power) {
-        fraction.numerator = (int) Math.pow(numerator, power);
-        fraction.denominator = (int) Math.pow(denominator, power);
+    public static Fraction pow(Fraction fraction, int power) {
+        fraction.numerator = (int) Math.pow(fraction.numerator, power);
+        fraction.denominator = (int) Math.pow(fraction.denominator, power);
         return fraction.getSimplestForm();
     }
 
@@ -238,9 +269,11 @@ public class Fraction implements Comparable<Fraction> {
 
     public static Fraction parseDouble(Double raw) {
         if (raw == Math.floor(raw)) {
-            return new Fraction((int) Math.floor(raw), 1).getSimplestForm();
+            Fraction ret = new Fraction((int) Math.floor(raw), 1);
+            ret.setIsInteger(ret.isInteger());
+            return ret;
         } else if (raw == Math.PI){
-            return pi;
+            return PI;
         } else {
             final int numLength = (int) Math.pow(10, raw.toString().split("\\.")[1].length());
             return new Fraction((int) (raw*numLength), numLength).getSimplestForm();
@@ -249,11 +282,22 @@ public class Fraction implements Comparable<Fraction> {
 
     public static Fraction parseString(String raw) {
         try {
-            return parseDouble(Double.parseDouble(raw));
+            String[] ret = raw.split("/");
+            if (ret.length == 0 || ret.length > 2) {
+
+                System.err.println("Input isn't fraction");
+                return null;
+            } else {
+                return new Fraction(Integer.parseInt(ret[0]), Integer.parseInt(ret[1]));
+            }
         } catch (IllegalArgumentException e) {
             System.err.println("String couldn't be converted into fraction!");
             return null;
         }
+    }
+
+    private boolean isInteger() {
+        return numerator % denominator == 0;
     }
 
     @Override
